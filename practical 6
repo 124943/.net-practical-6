@@ -1,0 +1,180 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Product_Catalog.Models
+{
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Category { get; set; }
+        public int Price { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}
+Code: ProductController.cs 
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Product_Catalog.Models;
+
+namespace Product_Catalog.Controllers
+{
+    public class ProductController : Controller
+    {
+        private List<Product> GetProducts()
+        {
+            return new List<Product>
+            {
+                new Product
+                {
+                    Id = 1,
+                    Name = "Laptop",
+                    Description = "HP Laptop",
+                    Category = "Electronics",
+                    Price = 50000,
+                    ImageUrl = "https://unsplash.com"
+                },
+                new Product
+                {
+                    Id = 2,
+                    new Product
+{
+    Id = 1, // Assumed ID based on the sequence, as the top is cut off
+    Name = "Mobile",
+    Description = "Samsung Mobile",
+    Category = "Electronics",
+    Price = 20000,
+    ImageUrl = "https://unsplash.com"
+},
+new Product
+{
+    Id = 3,
+    Name = "Headphones",
+    Description = "Wireless Headphones",
+    Category = "Accessories",
+    Price = 2000,
+    ImageUrl = "https://unsplash.com"
+},
+new Product
+{
+    Id = 4,
+    Name = "Keyboard",
+    Description = "Mechanical Keyboard",
+    Category = "Accessories",
+    Price = 3000,
+    ImageUrl = "https://unsplash.com"
+}
+};
+}
+
+public ActionResult Index()
+{
+    List<Product> products = GetProducts();
+    return View(products);
+}
+
+public ActionResult Details(int? id)
+{
+    if (id == null)
+    {
+        return RedirectToAction("Index");
+    }
+
+    Product product = GetProducts()
+        .FirstOrDefault(p => p.Id == id.Value);
+
+    if (product == null)
+    {
+        return HttpNotFound();
+    }
+
+    return View(product);
+}
+}
+}
+Code:Index.cshtml 
+@model List<Product_Catalog.Models.Product>
+
+@{
+    ViewBag.Title = "Product List";
+}
+
+<h2>Product List</h2>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@p.Id</td>
+            <td>@p.Name</td>
+            <td>@p.Description</td>
+            <td>@p.Category</td>
+            <td>@p.Price</td>
+            <td>
+                @Html.ActionLink("View", "Details", new { id = p.Id })
+            </td>
+        </tr>
+    }
+</table>
+Code: Details.cshtml 
+@model Product_Catalog.Models.Product
+
+@{
+    ViewBag.Title = "Product Details";
+}
+
+<h2>Product Details</h2>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>Product Id</th>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.Name</td></tr>
+        <tr>
+            <th>Description</th>
+            <td>@Model.Description</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>@Model.Category</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>₹@Model.Price</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>
+                <img src="@Model.ImageUrl"
+                     alt="@Model.Name"
+                     width="200"
+                     height="150"
+                     style="object-fit:contain;" />
+            </td>
+        </tr>
+    </table>
+
+    <br />
+
+    @Html.ActionLink("Back to Product List", "Index")
+        
+
+
+                    
+                    
